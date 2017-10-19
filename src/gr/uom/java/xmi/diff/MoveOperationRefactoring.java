@@ -59,4 +59,15 @@ public class MoveOperationRefactoring implements Refactoring {
 	public Set<Replacement> getReplacements() {
 		return replacements;
 	}
+
+	@Override
+	public String getShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(movedOperation);
+		sb.append(";");
+		sb.append(movedOperation.getClassName());
+		sb.append(";");
+		sb.append(originalOperation);
+		return sb.toString();
+	}
 }

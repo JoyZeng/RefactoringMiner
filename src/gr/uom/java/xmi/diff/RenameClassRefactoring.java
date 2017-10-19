@@ -36,5 +36,10 @@ public class RenameClassRefactoring implements Refactoring {
 	public String getRenamedClassName() {
 		return renamedClassName;
 	}
+
+	@Override
+	public String getShortDescription() {
+		return toString();
+	}
 	
 }

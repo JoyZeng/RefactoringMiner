@@ -29,12 +29,12 @@ public class SDRefactoring implements Refactoring {
 	}
 	
 	public SDEntity getEntityBefore() {
-    return entityBefore;
-  }
+		return entityBefore;
+	}
 
-  public SDEntity getEntityAfter() {
-    return entityAfter;
-  }
+	public SDEntity getEntityAfter() {
+		return entityAfter;
+	}
 
   @Override
 	public String toString() {
@@ -47,5 +47,10 @@ public class SDRefactoring implements Refactoring {
 //			sb.append(this.details);
 //		}
 		return sb.toString();
+	}
+
+	@Override
+	public String getShortDescription() {
+		return toString();
 	}
 }

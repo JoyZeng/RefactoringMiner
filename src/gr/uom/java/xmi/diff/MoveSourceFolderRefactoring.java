@@ -51,5 +51,10 @@ public class MoveSourceFolderRefactoring implements Refactoring {
 	public RefactoringType getRefactoringType() {
 		return RefactoringType.MOVE_SOURCE_FOLDER;
 	}
+
+	@Override
+	public String getShortDescription() {
+		return toString();
+	}
 	
 }

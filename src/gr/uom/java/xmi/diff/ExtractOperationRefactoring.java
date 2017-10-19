@@ -60,5 +60,17 @@ public class ExtractOperationRefactoring implements Refactoring {
 	public RefactoringType getRefactoringType() {
 		return RefactoringType.EXTRACT_OPERATION;
 	}
+
+	@Override
+	public String getShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(extractedOperation);
+		sb.append(";");
+		sb.append(sourceClassName);
+		sb.append(";");
+		sb.append(extractedFromOperation);
+
+		return sb.toString();
+	}
 	
 }

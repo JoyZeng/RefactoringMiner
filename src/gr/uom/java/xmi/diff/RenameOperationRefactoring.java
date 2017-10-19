@@ -14,7 +14,7 @@ public class RenameOperationRefactoring implements Refactoring {
 	private UMLOperation originalOperation;
 	private UMLOperation renamedOperation;
 	private Set<Replacement> replacements;
-	
+
 	public RenameOperationRefactoring(UMLOperationBodyMapper bodyMapper) {
 		this.originalOperation = bodyMapper.getOperation1();
 		this.renamedOperation = bodyMapper.getOperation2();
@@ -55,5 +55,16 @@ public class RenameOperationRefactoring implements Refactoring {
 
 	public Set<Replacement> getReplacements() {
 		return replacements;
+	}
+
+	@Override
+	public String getShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(renamedOperation);
+		sb.append(";");
+		sb.append(originalOperation.getClassName());
+		sb.append(";");
+		sb.append(originalOperation);
+		return sb.toString();
 	}
 }

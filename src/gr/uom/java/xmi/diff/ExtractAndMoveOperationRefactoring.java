@@ -60,4 +60,15 @@ public class ExtractAndMoveOperationRefactoring implements Refactoring {
 	public Set<Replacement> getReplacements() {
 		return replacements;
 	}
+
+	@Override
+	public String getShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(extractedOperation);
+		sb.append(";");
+		sb.append(extractedOperation.getClassName());
+		sb.append(";");
+		sb.append(extractedFromOperation);
+		return sb.toString();
+	}
 }

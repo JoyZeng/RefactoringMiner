@@ -60,5 +60,10 @@ public class MoveClassRefactoring implements Refactoring {
 	public String getMovedClassName() {
 		return movedClassName;
 	}
+
+	@Override
+	public String getShortDescription() {
+		return toString();
+	}
 	
 }

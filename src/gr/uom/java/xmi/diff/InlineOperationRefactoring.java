@@ -60,4 +60,15 @@ public class InlineOperationRefactoring implements Refactoring {
 	public Set<Replacement> getReplacements() {
 		return replacements;
 	}
+
+	@Override
+	public String getShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(inlinedToOperation);
+		sb.append(";");
+		sb.append(sourceClassName);
+		sb.append(";");
+		sb.append(inlinedOperation);
+		return sb.toString();
+	}
 }

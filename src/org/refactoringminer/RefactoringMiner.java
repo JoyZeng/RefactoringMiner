@@ -54,10 +54,10 @@ public class RefactoringMiner {
 		GitService gitService = new GitServiceImpl();
 		try (Repository repo = gitService.openRepository(folder)) {
 			Path folderPath = Paths.get(folder);
-			String fileName = (branch == null) ? "all_refactorings.csv" : "all_refactorings_" + branch + ".csv";
+			String fileName = (branch == null) ? "all_method_refactorings.csv" : "all_method_refactorings_" + branch + ".csv";
 			String filePath = folderPath.toString() + "/" + fileName;
 			Files.deleteIfExists(Paths.get(filePath));
-			saveToFile(filePath, getResultHeader());
+			saveToFile(filePath, getMethodRefactoringHeader());
 
 			GitHistoryRefactoringMiner detector = new GitHistoryRefactoringMinerImpl();
 			detector.detectAll(repo, branch, new RefactoringHandler() {
@@ -66,10 +66,12 @@ public class RefactoringMiner {
 					if (refactorings.isEmpty()) {
 						System.out.println("No refactorings found in commit " + commitId);
 					} else {
-						System.out.println(refactorings.size() + " refactorings found in commit " + commitId);
+//						System.out.println(refactorings.size() + " refactorings found in commit " + commitId);
 
 						for (Refactoring ref : refactorings) {
-							saveToFile(filePath, getResultRefactoringDescription(commitId, ref));
+							if (ref.getName().contains("Method")) {
+								saveToFile(filePath, getMethodRefactoringShortDescription(commitId, ref));
+							}
 						}
 					}
 				}
@@ -102,13 +104,13 @@ public class RefactoringMiner {
 			Path folderPath = Paths.get(folder);
 			String fileName = null;
 			if (endCommit == null) {
-				fileName = "refactorings_" + startCommit + "_begin" + ".csv";
+				fileName = "method_refactorings_" + startCommit + "_begin" + ".csv";
 			} else {
-				fileName = "refactorings_" + startCommit + "_" + endCommit + ".csv";
+				fileName = "method_refactorings_" + startCommit + "_" + endCommit + ".csv";
 			}
 			String filePath = folderPath.toString() + "/" + fileName;
 			Files.deleteIfExists(Paths.get(filePath));
-			saveToFile(filePath, getResultHeader());
+			saveToFile(filePath, getMethodRefactoringHeader());
 
 			GitHistoryRefactoringMiner detector = new GitHistoryRefactoringMinerImpl();
 			detector.detectBetweenCommits(repo, startCommit, endCommit, new RefactoringHandler() {
@@ -117,10 +119,11 @@ public class RefactoringMiner {
 					if (refactorings.isEmpty()) {
 						System.out.println("No refactorings found in commit " + commitId);
 					} else {
-						System.out.println(refactorings.size() + " refactorings found in commit " + commitId);
+//						System.out.println(refactorings.size() + " refactorings found in commit " + commitId);
 						for (Refactoring ref : refactorings) {
-							saveToFile(filePath, getResultRefactoringDescription(commitId, ref));
-						}
+							if (ref.getName().contains("Method")) {
+								saveToFile(filePath, getMethodRefactoringShortDescription(commitId, ref));
+							}						}
 					}
 				}
 
@@ -152,13 +155,13 @@ public class RefactoringMiner {
 			Path folderPath = Paths.get(folder);
 			String fileName = null;
 			if (endTag == null) {
-				fileName = "refactorings_" + startTag + "_begin" + ".csv";
+				fileName = "method_refactorings_" + startTag + "_begin" + ".csv";
 			} else {
-				fileName = "refactorings_" + startTag + "_" + endTag + ".csv";
+				fileName = "method_refactorings_" + startTag + "_" + endTag + ".csv";
 			}
 			String filePath = folderPath.toString() + "/" + fileName;
 			Files.deleteIfExists(Paths.get(filePath));
-			saveToFile(filePath, getResultHeader());
+			saveToFile(filePath, getMethodRefactoringHeader());
 
 			GitHistoryRefactoringMiner detector = new GitHistoryRefactoringMinerImpl();
 			detector.detectBetweenTags(repo, startTag, endTag, new RefactoringHandler() {
@@ -167,9 +170,11 @@ public class RefactoringMiner {
 					if (refactorings.isEmpty()) {
 						System.out.println("No refactorings found in commit " + commitId);
 					} else {
-						System.out.println(refactorings.size() + " refactorings found in commit " + commitId);
+//						System.out.println(refactorings.size() + " refactorings found in commit " + commitId);
 						for (Refactoring ref : refactorings) {
-							saveToFile(filePath, getResultRefactoringDescription(commitId, ref));
+							if (ref.getName().contains("Method")) {
+								saveToFile(filePath, getMethodRefactoringShortDescription(commitId, ref));
+							}
 						}
 					}
 				}
@@ -207,7 +212,9 @@ public class RefactoringMiner {
 					} else {
 						System.out.println(refactorings.size() + " refactorings found in commit " + commitId + ": ");
 						for (Refactoring ref : refactorings) {
-							System.out.println("  " + ref);
+							if (ref.getName().contains("Method")) {
+								System.out.println("  " + ref);
+							}
 						}
 					}
 				}
@@ -259,6 +266,20 @@ public class RefactoringMiner {
 
 	private static String getResultHeader() {
 		return "CommitId;RefactoringType;RefactoringDetail";
+	}
+	
+	private static String getMethodRefactoringHeader() {
+		return "RefactoredTo;Class;Refactoredfrom;RefactoringType;CommitId";
+	}
+	
+	private static String getMethodRefactoringShortDescription(String commitId, Refactoring ref) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(ref.getShortDescription());
+		builder.append(";");
+		builder.append(ref.getName());
+		builder.append(";");
+		builder.append(commitId);
+		return builder.toString();
 	}
 
 }

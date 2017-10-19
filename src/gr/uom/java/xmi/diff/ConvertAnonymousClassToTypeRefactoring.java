@@ -32,4 +32,9 @@ public class ConvertAnonymousClassToTypeRefactoring implements Refactoring {
 		return RefactoringType.CONVERT_ANONYMOUS_CLASS_TO_TYPE;
 	}
 
+	@Override
+	public String getShortDescription() {
+		return toString();
+	}
+
 }

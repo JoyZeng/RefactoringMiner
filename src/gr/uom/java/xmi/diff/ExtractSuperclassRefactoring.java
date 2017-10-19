@@ -48,4 +48,9 @@ public class ExtractSuperclassRefactoring implements Refactoring {
 		}
 		return subclassSet;
 	}
+
+	@Override
+	public String getShortDescription() {
+		return toString();
+	}
 }

@@ -48,4 +48,9 @@ public class MoveAttributeRefactoring implements Refactoring {
     return targetClassName;
   }
 
+	@Override
+	public String getShortDescription() {
+		return toString();
+	}
+
 }
